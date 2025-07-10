@@ -3,9 +3,10 @@ package com.backend.portfolio_ac.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UUID;
+
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Clase base para entidades con auditoria de fechas y control de concurrencia.

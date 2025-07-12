@@ -1,5 +1,7 @@
 package com.backend.portfolio_ac.service;
 
+import com.backend.portfolio_ac.dto.AuthResponse;
+import com.backend.portfolio_ac.dto.LoginRequest;
 import com.backend.portfolio_ac.dto.RegisterRequest;
 import com.backend.portfolio_ac.entity.User;
 
@@ -18,4 +20,13 @@ public interface UserService {
      * @return el usuario registrado
      */
     User registerNewUser(RegisterRequest request);
+
+
+    /**
+     * Autentica un suario en el sistema
+     *
+     * @param loginRequest los datos de autenticación del usuario
+     * @return AuthResponse
+     */
+    AuthResponse login(LoginRequest loginRequest);
 }

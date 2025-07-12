@@ -3,18 +3,13 @@ package com.backend.portfolio_ac.controller;
 import com.backend.portfolio_ac.dto.AuthResponse;
 import com.backend.portfolio_ac.dto.LoginRequest;
 import com.backend.portfolio_ac.dto.RegisterRequest;
-import com.backend.portfolio_ac.dto.UserSafeDto;
-import com.backend.portfolio_ac.entity.User;
 import com.backend.portfolio_ac.repository.UserRepository;
 import com.backend.portfolio_ac.security.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import com.backend.portfolio_ac.service.UserService;
 
@@ -25,8 +20,8 @@ import com.backend.portfolio_ac.service.UserService;
  */
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api/auth")
-public class AuthController {
+@RequestMapping("/auth")
+public class UserController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -63,7 +58,14 @@ public class AuthController {
      */
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest request) {
-            User user = userService.registerNewUser(request);
-            return ResponseEntity.ok(user);
+
+            //Registrar usuario
+            userService.registerNewUser(request);
+
+            // hacer Login
+            LoginRequest loginRequest = new LoginRequest(request.getEmail(), request.getPassword());
+            AuthResponse authResponse = userService.login(loginRequest);
+
+            return ResponseEntity.ok(authResponse);
     }
 }

@@ -21,6 +21,7 @@ import com.backend.portfolio_ac.service.UserService;
 /**
  * Controlador de autenticación que gestiona el login y registro de usuarios.
  * Proporciona endpoints REST para autenticación y registro.
+ * @author bunnystring
  */
 @CrossOrigin("*")
 @RestController

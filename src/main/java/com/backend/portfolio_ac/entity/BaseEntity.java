@@ -25,7 +25,7 @@ public abstract class BaseEntity {
      */
     @Id
     @GeneratedValue
-    @Column(name = "id", columnDefinition = "BINARY(16)")
+    @Column(name = "id", columnDefinition = "CHAR(36)")
     private UUID id;
 
     /**

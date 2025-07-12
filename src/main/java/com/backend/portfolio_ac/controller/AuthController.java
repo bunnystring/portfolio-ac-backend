@@ -50,25 +50,9 @@ public class AuthController {
      * @return Un ResponseEntity con el token JWT o un mensaje de error.
      */
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
-            );
-            UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getEmail());
-            String token = jwtUtil.generateToken(userDetails.getUsername());
-
-            // Recuperar entidad User y mapear a UserSafeDto
-            User user = userRepository.findByEmail(loginRequest.getEmail())
-                    .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
-            UserSafeDto safeUser = new UserSafeDto(user.getName(), user.getEmail());
-
-            return ResponseEntity.ok(new AuthResponse(safeUser, token));
-        } catch (UsernameNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no encontrado");
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
-        }
+    public ResponseEntity<?> login(@RequestBody @Valid LoginRequest loginRequest){
+     AuthResponse authResponse = userService.login(loginRequest);
+     return ResponseEntity.ok(authResponse);
     }
 
     /**
@@ -79,11 +63,7 @@ public class AuthController {
      */
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest request) {
-        try {
             User user = userService.registerNewUser(request);
-            return ResponseEntity.ok("Usuario registrado exitosamente");
-        } catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+            return ResponseEntity.ok(user);
     }
 }

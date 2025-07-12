@@ -14,15 +14,15 @@ import lombok.Data;
 @Data
 public class RegisterRequest {
 
-    @NotBlank(message = "El nombre es obligatorio")
+    @NotBlank(message = "Name is required")
     @Size(max = 50)
     private String name;
 
-    @NotBlank(message = "El email es obligatorio")
-    @Email(message = "El email debe ser valido")
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email must be validated")
     private String email;
 
-    @NotBlank(message = "La contraseña es obligatoria")
-    @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
+    @NotBlank(message = "Password is required")
+    @Size(min = 6, message = "The password must be at least 6 characters long")
     private String password;
 }

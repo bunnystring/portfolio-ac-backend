@@ -3,6 +3,8 @@ package com.backend.portfolio_ac.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 
 import java.time.LocalDateTime;
@@ -24,6 +26,7 @@ public abstract class BaseEntity {
      * Identificador único de la entidad.
      */
     @Id
+    @JdbcTypeCode(SqlTypes.CHAR)
     @GeneratedValue
     @Column(name = "id", columnDefinition = "CHAR(36)")
     private UUID id;

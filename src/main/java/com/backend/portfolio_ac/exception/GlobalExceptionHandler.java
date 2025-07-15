@@ -49,6 +49,36 @@ public class GlobalExceptionHandler {
                 ));
     }
 
+
+    @ExceptionHandler(ContactException.class)
+    public ResponseEntity<?> handleContactException(ContactException ex) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        switch (ex.getType()){
+            case NOT_FOUND:
+                status = HttpStatus.NOT_FOUND;
+                break;
+            case INVALID_EMAIL:
+                status = HttpStatus.BAD_REQUEST;
+                break;
+            case MESSAGE_TOO_LONG:
+                status = HttpStatus.BAD_REQUEST;
+                break;
+            case VALIDATION_ERROR:
+                status = HttpStatus.BAD_REQUEST;
+                break;
+            default:
+                status = HttpStatus.BAD_REQUEST;
+        }
+        return ResponseEntity.status(status)
+                .body(Map.of(
+                        "timestamp", LocalDateTime.now(),
+                        "status", status.value(),
+                        "error", "Contact Error",
+                        "message", ex.getMessage()
+                ));
+    }
+
+
     // Maneja cualquier otra excepcion no controlada
     // Dejar de ultimas
     @ExceptionHandler(Exception.class)

@@ -1,23 +1,18 @@
-package com.backend.portfolio_ac.entity;
+package com.backend.portfolio_ac.dto;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(name = "projects")
-@Builder
-public class Project extends BaseEntity{
+public class ProjectCreateDto {
 
     /**
      * Nombre del proyecto
@@ -29,7 +24,7 @@ public class Project extends BaseEntity{
     /**
      * Descripción del proyecto.
      */
-    @Column(length = 2000)
+    @Size(max = 2000)
     private String description;
 
     /**
@@ -58,11 +53,8 @@ public class Project extends BaseEntity{
     private boolean isActive = true;
 
     /**
-     * Lista de las imagenes asociadas al proyecto.
+     * Lista de URLs de las imágenes asociadas al proyecto.
+     * Puedes cambiar el tipo si necesitas DTOs de imagen más complejos.
      */
-
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<ProjectImage> images = new ArrayList<>();
-
+    private List<String> images;
 }

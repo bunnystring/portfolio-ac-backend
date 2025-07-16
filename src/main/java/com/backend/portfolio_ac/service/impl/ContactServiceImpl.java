@@ -42,7 +42,7 @@ public class ContactServiceImpl implements ContactService {
         }
 
         contactRepository.findByEmail(request.getEmail()).ifPresent(c -> {
-            throw new ContactException("Ya hay una solicitud en curso,espera a que me contacte contigo", ContactException.Type.VALIDATION_ERROR);
+            throw new ContactException("Ya hay una solicitud en curso, espera a que me contacte contigo", ContactException.Type.VALIDATION_ERROR);
         });
 
         Contacto contacto = new Contacto();

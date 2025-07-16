@@ -20,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.backend.portfolio_ac.exception.UserException;
 
+import java.util.List;
+
 /**
  * Implementación del servicio de usuarios para el registro de nuevos usuarios.
  *

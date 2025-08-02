@@ -2,6 +2,7 @@ package com.backend.portfolio_ac.service;
 
 
 import com.backend.portfolio_ac.dto.ProjectCreateDto;
+import com.backend.portfolio_ac.dto.ProjectDTO;
 import com.backend.portfolio_ac.entity.Project;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public interface ProjectService {
      *
      * @return
      */
-    List<Project> getAllProjects();
+    List<ProjectDTO> getAllProjects();
 
     /**
      *

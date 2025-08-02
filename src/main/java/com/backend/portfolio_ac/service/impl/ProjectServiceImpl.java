@@ -1,16 +1,21 @@
 package com.backend.portfolio_ac.service.impl;
 
 import com.backend.portfolio_ac.dto.ProjectCreateDto;
+import com.backend.portfolio_ac.dto.ProjectDTO;
+import com.backend.portfolio_ac.dto.ProjectImageDTO;
 import com.backend.portfolio_ac.entity.Project;
 import com.backend.portfolio_ac.entity.ProjectImage;
 import com.backend.portfolio_ac.exception.ProjectException;
 import com.backend.portfolio_ac.repository.ProjectRepository;
 import com.backend.portfolio_ac.service.ProjectService;
+import com.backend.portfolio_ac.util.MessageException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,12 +25,33 @@ public class ProjectServiceImpl implements ProjectService {
 
 
     @Override
-    public List<Project> getAllProjects(){
+    public List<ProjectDTO> getAllProjects(){
         List<Project> projects = projectRepository.findAll();
         if (projects.isEmpty()){
-            throw new ProjectException("No se encontraron projectos asociados", ProjectException.Type.NOT_FOUND_PROJECTS);
+            throw new ProjectException(MessageException.PROJECT_NOT_FOUND, ProjectException.Type.NOT_FOUND_PROJECTS);
         }
-        return projects;
+
+        List<ProjectDTO> rs = new ArrayList<>();
+        for (Project project : projects) {
+            ProjectDTO dto = ProjectDTO.builder()
+                    .name(project.getName())
+                    .description(project.getDescription())
+                    .start_date(project.getStartDate())
+                    .end_date(project.getEndDate())
+                    .is_active(project.isActive() ? "Activo" : "Inactivo")
+                    .repository_url(project.getRepositoryUrl())
+                    .url(project.getUrl())
+                    .ProjectImageDTO(
+                            project.getImages().stream()
+                                    .map(img -> ProjectImageDTO.builder()
+                                            .image_url(img.getImageUrl())
+                                            .build()
+                                    ).collect(Collectors.toList())
+                    )
+                    .build();
+            rs.add(dto);
+        }
+        return rs;
     }
 
     @Override
@@ -33,7 +59,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         // Validar si el proyecto existe
         if (this.projectRepository.findByName(dto.getName()) != null){
-            throw new ProjectException("Este proyecto ya existe", ProjectException.Type.PROJECT_EXIST);
+            throw new ProjectException(MessageException.PROJECT_ALREADY, ProjectException.Type.PROJECT_EXIST);
         }
 
         try{

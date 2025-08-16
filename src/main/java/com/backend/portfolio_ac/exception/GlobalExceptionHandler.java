@@ -84,7 +84,7 @@ public class GlobalExceptionHandler {
 
     // Project exceptions
     @ExceptionHandler(ProjectException.class)
-    public ResponseEntity<?> handleContactException(ProjectException ex) {
+    public ResponseEntity<?> handleProjectException(ProjectException ex) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         switch (ex.getType()){
             case NOT_FOUND_PROJECTS:
@@ -101,6 +101,35 @@ public class GlobalExceptionHandler {
                 break;
             case ERROR_CREATE:
                 status = HttpStatus.BAD_REQUEST;
+                break;
+            default:
+                status = HttpStatus.BAD_REQUEST;
+        }
+        return ResponseEntity.status(status)
+                .body(Map.of(
+                        "timestamp", LocalDateTime.now(),
+                        "status", status.value(),
+                        "error", "Contact Error",
+                        "message", ex.getMessage()
+                ));
+    }
+
+    // Email verification Exceptions
+    @ExceptionHandler(VerificationEmailException.class)
+    public ResponseEntity<?> handleEmailVerificationException(VerificationEmailException ex) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        switch (ex.getType()){
+            case CODE_INVALID:
+                status = HttpStatus.BAD_REQUEST;
+                break;
+            case CODE_EXPIRED:
+                status = HttpStatus.GONE;
+                break;
+            case EMAIL_VERIFIED:
+                status = HttpStatus.CONFLICT;
+                break;
+            case EMAIL_VERIFICATION_FAIL_SEND:
+                status = HttpStatus.INTERNAL_SERVER_ERROR;
                 break;
             default:
                 status = HttpStatus.BAD_REQUEST;
